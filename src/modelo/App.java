@@ -12,19 +12,26 @@ public class App {
         Alumno alum3 = new Alumno(0003, "Maria", "La del barrio", "312456789", 16, 987654321, 1);
         
         
-        //ld.insertarAlum(alum1);
-       //ld.insertarAlum(alum2);
-        //ld.insertarAlum(alum3);
+        ld.insertarAlum(alum1);
+        ld.insertarAlum(alum2);
+        ld.insertarAlum(alum3);
+        System.out.println(ld.MostrarAlum());
+        ld.eliminarAlum(2);
         
         //ld.GuardarAlumnos();
         //System.out.println(ld.buscarAlumno(0004).toString());
         //ld.eliminarAlum(0003);
         //ld.eliminarAlum(0002);
+        System.out.println(ld.MostrarAlum());
+        Alumno alum4 = new Alumno(0004, "Ramon", "Ramos", "412356789", 10, 456789132, 1);
+        ld.insertarAlum(alum4);
+        System.out.println(ld.MostrarAlum());
+
         //ld.Mostrar();
-        //Alumno alum4 = new Alumno(0004, "Ramon", "Ramos", "412356789", 10, 456789132, 1);
-        //ld.insertarAlum(alum4);
         //ld.Mostrar();
-        //ld.Mostrar();
+        
+
+        /*
         //Crea el Curso
         Curso curso1 = new Curso(0001, "Literatura", 3, 5, 8);
         Curso curso2 = new Curso(0002, "Matematicas", 1, 4, 7);
@@ -64,7 +71,7 @@ public class App {
         ld.insertarRetiro(retiro4);
         
         //System.out.println(ld.MostrarRetiro());
-        
+        */
         
     }
 }

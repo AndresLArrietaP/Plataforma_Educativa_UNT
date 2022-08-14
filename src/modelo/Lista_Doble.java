@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +22,7 @@ public class Lista_Doble {
 
     }
 
+    // Inserta alumno al inicio de la lista doble
     public void insertarAlum(Alumno alum) {
         if (inicio == null) {
             inicio = new Nodo(alum, null, null);
@@ -30,9 +32,9 @@ public class Lista_Doble {
             inicio.setAnterior(nuevo);
             inicio = nuevo;
         }
-
     }
 
+    // Impresion del final al inicio
     public String MostrarAlum() {
         Nodo temp = fin;
         String alumnos = "";
@@ -45,48 +47,46 @@ public class Lista_Doble {
         return alumnos;
     }
 
+    
     public Alumno buscarAlumno(int codigo) {
         Nodo temp = inicio;
         while (temp != null) {
             if (temp.getAlum().getCodAlumno() == codigo) {
-
-                break;
+                return temp.getAlum();
             }
             temp = temp.getSiguiente();
         }
-        return temp.getAlum();
+        return null;
     }
 
-    public Alumno eliminarAlum(int codigo) {
+    
+    public void eliminarAlum(int codigo) {
         Nodo temp = inicio;
-        boolean encontrado = false;
-        while (!encontrado) {
-            encontrado = (temp.getAlum().getCodAlumno() == codigo);
-            if (!encontrado) {
-                temp = temp.getSiguiente();
-            }
-        }
-        Alumno alum = temp.getAlum();
-        if (encontrado) {
-            if (temp == inicio) {
-                inicio = temp.getSiguiente();
-            } else {
-                temp.getAnterior().setSiguiente(temp.getSiguiente());
-                if (temp.getSiguiente() != null) {
+        while (temp != null) {
+            if (temp.getAlum().getCodAlumno() == codigo) {
+                
+                if (temp == inicio && temp == fin) {
+                    temp = null;
+                    inicio = temp;
+                    fin = temp;
+                    return;
+                } else if (temp == inicio) {
+                    temp = temp.getSiguiente();
+                    temp.setAnterior(null);
+                    inicio = temp;
+                    return;
+                } else if (temp == fin) {
+                    temp = temp.getAnterior();
+                    temp.setSiguiente(null);
+                    fin = temp;                    
+                } else {
                     temp.getSiguiente().setAnterior(temp.getAnterior());
-                    
-                }
+                    temp.getAnterior().setSiguiente(temp.getSiguiente());
+                    return;
+                }  
             }
-            temp = null;
-
             temp = temp.getSiguiente();
-            if (inicio != null) {
-                temp.setAnterior(null);
-            } else {
-                fin = null;
-            }
         }
-        return alum;
     }
 
     public void cajaAlum(JComboBox caj) {
@@ -138,7 +138,7 @@ public class Lista_Doble {
     public void Lista_Alumnos(DefaultTableModel model) {
         Nodo temp = fin;
         if (fin == null && inicio == null) {
-
+            
         } else {
             while (temp != null) {
                 if (temp.getAlum() != null) {

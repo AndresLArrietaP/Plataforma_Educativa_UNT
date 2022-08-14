@@ -291,13 +291,14 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         try {
             int codAlumno = leerCodigo();
             Alumno buscado = ld.buscarAlumno(codAlumno);
-            if (buscado.getEstado() == 0) {
+            if (buscado.getEstado() == 0) { // registrado
                 ld.eliminarAlum(codAlumno);
-                int fila = tblAlumnos.getSelectedRow();
-                model.removeRow(fila);
+                //int fila = tblAlumnos.getSelectedRow();
+                //model.removeRow(fila);
+                listar();
                 mensaje("Alumno eliminado exitosamente");
                 deshabilitarTodo();
-
+                ld.GuardarAlumnos();
             } else {
                 error("No puede eliminar a un alumno ya matriculado", boxCodigo);
             }

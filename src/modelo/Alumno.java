@@ -73,8 +73,9 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return "Alumno{" + "codAlumno=" + codAlumno + ", edad=" + edad + ", celular=" + celular + ", estado=" + estado + ", nombres=" + nombres + ", apellidos=" + apellidos + ", dni=" + dni + '}';
+        return "\ncodAlumno=" + codAlumno + ", edad=" + edad + 
+                ", celular=" + celular + ", estado=" + estado + 
+                ", nombres=" + nombres + ", apellidos=" + apellidos 
+                + ", dni=" + dni +"\n";
     }
-    
-    
 }

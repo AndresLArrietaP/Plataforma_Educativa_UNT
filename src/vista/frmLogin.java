@@ -55,7 +55,7 @@ public class frmLogin extends javax.swing.JFrame {
 
         pnIncio.setPreferredSize(new java.awt.Dimension(800, 475));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/Sí.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/Si.png"))); // NOI18N
 
         pnIncio.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 

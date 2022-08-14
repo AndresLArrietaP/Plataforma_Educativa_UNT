@@ -9,9 +9,6 @@ public class Nodo {
     private Curso curso;
     private Matricula matricula;
     private Retiro retiro;
-
-    public Nodo() {
-    }
     
     public Nodo(Alumno alumno, Nodo ante, Nodo sig) {
         siguiente = sig;

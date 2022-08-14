@@ -5,6 +5,7 @@
 package vista;
 
 import java.awt.ScrollPane;
+import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -29,7 +30,8 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     public frmAlumno() {
         initComponents();
         this.setLocation(150, 40);
-
+        this.setTitle("Mantenimiento de Alumnos");
+        //ld.CargarAlumno();
         model = new DefaultTableModel();
         model.addColumn("CÓDIGO");
         model.addColumn("NOMBRES");
@@ -39,11 +41,10 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         model.addColumn("CELULAR");
         model.addColumn("ESTADO");
         tblAlumnos.setModel(model);
-
         ajustarColumnas();
         listar();
         deshabilitarTodo();
-        
+
     }
 
     /**
@@ -109,13 +110,18 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, -1));
 
         boxCodigo.setEnabled(false);
+        boxCodigo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxCodigoItemStateChanged(evt);
+            }
+        });
         jPanel1.add(boxCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 110, -1));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 196, -1));
         jPanel1.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 196, -1));
         jPanel1.add(txtDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 102, -1));
         jPanel1.add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 102, -1));
 
-        boxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Registrado", "Matriculado", "Retirado" }));
+        boxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Registrado", "Matriculado", "Retirado" }));
         boxEstado.setEnabled(false);
         jPanel1.add(boxEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 102, -1));
 
@@ -179,6 +185,11 @@ public class frmAlumno extends javax.swing.JInternalFrame {
                 "Codigo", "Nombres", "Apellidos", "DNI", "Edad", "Celular", "Estado"
             }
         ));
+        tblAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAlumnosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblAlumnos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 670, 140));
@@ -203,14 +214,13 @@ public class frmAlumno extends javax.swing.JInternalFrame {
                                 try {
                                     int celular = leerCelular();
                                     int estado = leerEstado();
-
                                     if (estado != -1) {
                                         if (!btnAdicionar.isEnabled()) {
-
                                             if (!existeDNI(dni)) {
-
-                                                Alumno nuevo = new Alumno(codAlumno, nombre, apellidos, dni, edad, celular, estado);
+                                                Alumno nuevo = new Alumno(codAlumno, nombre, apellidos, 
+                                                                            dni, edad, celular, estado);
                                                 ld.insertarAlum(nuevo);
+                                                ld.GuardarAlumnos();
                                                 listar();
                                                 mensaje("Nuevo alumno añadido exitosamente");
                                                 deshabilitarTodo();
@@ -218,12 +228,13 @@ public class frmAlumno extends javax.swing.JInternalFrame {
                                                 error("No puede ingresar un DNI ya existente", txtDNI);
                                             }
                                         } else if (!btnModificar.isEnabled()) {
+                                            //Al darle en el alumno se cambiara 
                                             Alumno buscado = ld.buscarAlumno(codAlumno);
                                             buscado.setNombres(nombre);
                                             buscado.setApellidos(apellidos);
                                             buscado.setEdad(edad);
                                             buscado.setCelular(celular);
-
+                                            ld.GuardarAlumnos();
                                             listar();
                                             mensaje("Alumno modificado exitosamente");
                                             deshabilitarTodo();
@@ -262,9 +273,9 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         limpiar();
         habilitar(false, true, true, true, true, true, false, true, true, false, true, false);
-        boxEstado.setSelectedIndex(1);
+        boxEstado.setSelectedIndex(0);
         boxCodigo.addItem(String.valueOf(ld.codigoCorrelativo()));
-        boxCodigo.setSelectedIndex(ld.tamaño());
+        boxCodigo.setSelectedIndex(ld.tamañoAlum());
         txtNombre.requestFocus();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
@@ -281,12 +292,12 @@ public class frmAlumno extends javax.swing.JInternalFrame {
             int codAlumno = leerCodigo();
             Alumno buscado = ld.buscarAlumno(codAlumno);
             if (buscado.getEstado() == 0) {
-                if (confirmar() == 0) {
-                    ld.eliminarAlum(codAlumno);
-                    listar();
-                    mensaje("Alumno eliminado exitosamente");
-                    deshabilitarTodo();
-                }
+                ld.eliminarAlum(codAlumno);
+                int fila = tblAlumnos.getSelectedRow();
+                model.removeRow(fila);
+                mensaje("Alumno eliminado exitosamente");
+                deshabilitarTodo();
+
             } else {
                 error("No puede eliminar a un alumno ya matriculado", boxCodigo);
             }
@@ -294,6 +305,39 @@ public class frmAlumno extends javax.swing.JInternalFrame {
             error("Seleccione un código de alumno", boxCodigo);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void tblAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMouseClicked
+        if (btnAdicionar.isEnabled()) {
+            try {
+                Alumno buscado = ld.buscarAlumno(202010001 + tblAlumnos.getSelectedRow());
+                boxCodigo.setSelectedIndex(tblAlumnos.getSelectedRow());
+                txtNombre.setText(buscado.getNombres());
+                txtApellidos.setText(buscado.getApellidos());
+                txtDNI.setText(buscado.getDni());
+                txtEdad.setText("" + buscado.getEdad());
+                txtCelular.setText("" + buscado.getCelular());
+                boxEstado.setSelectedIndex(buscado.getEstado());
+            } catch (Exception error) {
+            }
+        }
+    }//GEN-LAST:event_tblAlumnosMouseClicked
+
+    private void boxCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxCodigoItemStateChanged
+        // TODO add your handling code here:
+        try {
+            int codAlumno = leerCodigo();
+            Alumno buscado = ld.buscarAlumno(codAlumno);
+            txtNombre.setText(buscado.getNombres());
+            txtApellidos.setText(buscado.getApellidos());
+            txtDNI.setText(buscado.getDni());
+            txtEdad.setText("" + buscado.getEdad());
+            txtCelular.setText("" + buscado.getCelular());
+            boxEstado.setSelectedIndex(buscado.getEstado());
+            tblAlumnos.setRowSelectionInterval(boxCodigo.getSelectedIndex(), boxCodigo.getSelectedIndex());
+        } catch (Exception error) {
+
+        }
+    }//GEN-LAST:event_boxCodigoItemStateChanged
 
     int leerCodigo() {
         return Integer.parseInt(boxCodigo.getSelectedItem().toString());
@@ -328,22 +372,14 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     }
 
     void listar() {
-        model.setRowCount(0);
+        model.getDataVector().removeAllElements();
         ld.Lista_Alumnos(model);
     }
 
     void mensaje(String s) {
         JOptionPane.showMessageDialog(this, s);
     }
-
-    int confirmar() {
-        int valor = JOptionPane.showOptionDialog(null,
-                "¿Estás seguro que deseas eliminar a este alumno?\n"
-                + ld.buscarAlumno(leerCodigo()).getNombres() + " " + ld.buscarAlumno(leerCodigo()).getApellidos(),
-                "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Sí", "No"}, null);
-        return valor;
-    }
-
+    
     void habilitar(boolean codigo, boolean nombre, boolean apellidos, boolean dni, boolean edad, boolean celular,
             boolean estado, boolean aceptar, boolean cancelar, boolean adicionar, boolean modificar, boolean eliminar) {
         boxCodigo.setEnabled(codigo);
@@ -379,7 +415,7 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     void listarCboCodigo() {
         boxCodigo.removeAllItems();
 
-        ld.caja(boxCodigo);
+        ld.cajaAlum(boxCodigo);
     }
 
     void error(String s, JComboBox cbo) {
@@ -395,13 +431,13 @@ public class frmAlumno extends javax.swing.JInternalFrame {
 
     void ajustarColumnas() {
         TableColumnModel modeloColuma = tblAlumnos.getColumnModel();
-        modeloColuma.getColumn(0).setPreferredWidth(jScrollPane1.getWidth() * 2);
-        modeloColuma.getColumn(1).setPreferredWidth(jScrollPane1.getWidth() * 4);
-        modeloColuma.getColumn(2).setPreferredWidth(jScrollPane1.getWidth() * 4);
-        modeloColuma.getColumn(3).setPreferredWidth(jScrollPane1.getWidth() * 2);
-        modeloColuma.getColumn(4).setPreferredWidth(jScrollPane1.getWidth() * 1);
-        modeloColuma.getColumn(5).setPreferredWidth(jScrollPane1.getWidth() * 2);
-        modeloColuma.getColumn(6).setPreferredWidth(jScrollPane1.getWidth() * 3);
+        modeloColuma.getColumn(0).setPreferredWidth(jScrollPane1.getWidth()*2);
+        modeloColuma.getColumn(1).setPreferredWidth(jScrollPane1.getWidth()*4);
+        modeloColuma.getColumn(2).setPreferredWidth(jScrollPane1.getWidth()*4);
+        modeloColuma.getColumn(3).setPreferredWidth(jScrollPane1.getWidth()*2);
+        modeloColuma.getColumn(4).setPreferredWidth(jScrollPane1.getWidth()*1);
+        modeloColuma.getColumn(5).setPreferredWidth(jScrollPane1.getWidth()*2);
+        modeloColuma.getColumn(6).setPreferredWidth(jScrollPane1.getWidth()*3);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxCodigo;

@@ -16,6 +16,7 @@ public class frmLogin extends javax.swing.JFrame {
     public frmLogin() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setTitle("Inicio");
     }
 
     /**
@@ -235,16 +236,14 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_MnSalirActionPerformed
 
     private void MnAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnAlumnoActionPerformed
-        
-        frmAlumno ventana= new frmAlumno();
+        frmAlumno ventana = new frmAlumno();
         pnIncio.add(ventana);
         ventana.show();
-        
     }//GEN-LAST:event_MnAlumnoActionPerformed
 
     private void MnCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnCursoActionPerformed
         frmCurso ventana = new frmCurso();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnCursoActionPerformed
 
@@ -256,88 +255,62 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void MnRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRetiroActionPerformed
         frmRetiro ventana = new frmRetiro();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnRetiroActionPerformed
 
     private void MnConAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnConAlumnoActionPerformed
         frmConAlumno ventana = new frmConAlumno();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnConAlumnoActionPerformed
 
     private void MnConCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnConCursoActionPerformed
         frmConCurso ventana = new frmConCurso();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnConCursoActionPerformed
 
     private void MnConMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnConMatriculaActionPerformed
         frmConMatricula ventana = new frmConMatricula();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnConMatriculaActionPerformed
 
     private void MnConRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnConRetiroActionPerformed
         frmConRetiro ventana = new frmConRetiro();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnConRetiroActionPerformed
 
     private void MnAlumPenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnAlumPenActionPerformed
-        // TODO add your handling code here:
         frmReportePendiente ventana = new frmReportePendiente();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnAlumPenActionPerformed
 
     private void MnAlumVigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnAlumVigenActionPerformed
-        // TODO add your handling code here:
         frmMatriculaVigente ventana = new frmMatriculaVigente();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnAlumVigenActionPerformed
 
     private void MnAlumCurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnAlumCurActionPerformed
-        // TODO add your handling code here:
         frmMatriculadosCurso ventana = new frmMatriculadosCurso();
-         pnIncio.add(ventana);
+        pnIncio.add(ventana);
         ventana.show();
     }//GEN-LAST:event_MnAlumCurActionPerformed
-    
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+    public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmLogin().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

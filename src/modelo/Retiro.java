@@ -6,7 +6,7 @@ package modelo;
 
 /**
  *
- * @author Delma
+ * @author acer
  */
 public class Retiro {
 

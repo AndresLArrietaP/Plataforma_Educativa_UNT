@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 public class Calendario {
 
-    public static String fechaActual() {
+     public static String fechaActual() {
         Calendar calendario = Calendar.getInstance();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         return formato.format(calendario.getTime());

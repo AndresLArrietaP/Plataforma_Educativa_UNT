@@ -11,10 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import modelo.Curso;
 import modelo.Lista_Doble;
+import modelo.Repositorio;
 
 /**
  *
- * @author Delma
+ * @author acer
  */
 public class frmCurso extends javax.swing.JInternalFrame {
 
@@ -27,14 +28,16 @@ public class frmCurso extends javax.swing.JInternalFrame {
     public frmCurso() {
         initComponents();
         this.setLocation(150, 40);
-        this.setTitle("Mantenimiento de Curso");
-        
+        this.setTitle("Gestión de Cursos");
+        ld.CargarCurso();
+        Repositorio.CargarRepo();
         model = new DefaultTableModel();
         model.addColumn("CÓDIGO");
         model.addColumn("ASIGNATURA");
         model.addColumn("CICLO");
         model.addColumn("CRÉDITOS");
         model.addColumn("HORAS");
+        model.addColumn("VACANTES");
         tblCursos.setModel(model);
 
         ajustarColumnas();
@@ -69,30 +72,33 @@ public class frmCurso extends javax.swing.JInternalFrame {
         btnAdicionar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCursos = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        txtVacantes = new javax.swing.JTextField();
 
         setClosable(true);
-        setTitle("Mantenimiento de Cursos");
+        setTitle("Gestión de Cursos");
         setVisible(false);
 
+        jPanel1.setBackground(new java.awt.Color(255, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel1.setText("Codigo:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel2.setText("Asignatura:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel3.setText("Ciclo:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jLabel4.setText("N° de Creditos:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel4.setText("Vacantes:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel5.setText("Cant. de horas:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, -1, -1));
 
@@ -106,7 +112,7 @@ public class frmCurso extends javax.swing.JInternalFrame {
         jPanel1.add(boxCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 130, -1));
 
         boxCiclo.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        boxCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto" }));
+        boxCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Septimo", "Octavo", "Noveno", "Decimo" }));
         boxCiclo.setEnabled(false);
         boxCiclo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,58 +131,61 @@ public class frmCurso extends javax.swing.JInternalFrame {
         jPanel1.add(txtHoras, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 50, -1));
 
         btnCancelar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cross.png"))); // NOI18N
         btnCancelar.setEnabled(false);
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 120, 40));
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 50, 50));
 
         btnModificar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnModificar.setText("Modificar");
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/edit.png"))); // NOI18N
+        btnModificar.setText("MODIFICAR");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, 130, 50));
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, 160, 50));
 
         btnAceptar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnAceptar.setText("Aceptar");
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/check.png"))); // NOI18N
         btnAceptar.setEnabled(false);
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAceptarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 120, 40));
+        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 50, 50));
 
         btnEliminar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnEliminar.setText("Eliminar");
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/delete.png"))); // NOI18N
+        btnEliminar.setText("ELIMINAR");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 130, 50));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 160, 50));
 
         btnAdicionar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnAdicionar.setText("Adicionar");
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/add.png"))); // NOI18N
+        btnAdicionar.setText("AGREGAR");
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 130, 50));
+        jPanel1.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 160, 50));
 
         tblCursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Codigo", "Asignatura", "Ciclo", "Creditos", "Horas"
+                "Codigo", "Asignatura", "Ciclo", "Creditos", "Horas", "Vacantes"
             }
         ));
         tblCursos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -186,13 +195,20 @@ public class frmCurso extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblCursos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 620, 140));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 620, 140));
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel6.setText("N° de Creditos:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+
+        txtVacantes.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jPanel1.add(txtVacantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 60, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,11 +237,13 @@ public class frmCurso extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             int codCurso = leerCodigo();
-            Curso buscado = ld.buscarCurso(codCurso);
-            //ld.eliminar(buscado);
+            ld.eliminarCurso(codCurso);
             listar();
             mensaje("Curso eliminado exitosamente");
             deshabilitarTodo();
+            ld.GuardarCurso();
+            Repositorio.CurElim++;
+            Repositorio.GuardarRepo();
         } catch (Exception error) {
             error("Seleccione un código de curso", boxCodigo);
         }
@@ -240,12 +258,14 @@ public class frmCurso extends javax.swing.JInternalFrame {
                 if (ciclo != -1) {
                     try {
                         int creditos = leerCreditos();
-                        try {
+                        int vacantes = leerVacantes();
+                        if(vacantes<=50) {
                             int horas = leerHoras();
+                            
                             if (!btnAdicionar.isEnabled()) {
-                                Curso curso = new Curso(codCurso, asignatura, ciclo, creditos, horas);
+                                Curso curso = new Curso(codCurso, asignatura, ciclo, creditos, horas,vacantes);
                                 ld.insertarCurso(curso);
-                                
+                                ld.GuardarCurso();
                                 listar();
                                 mensaje("Nuevo curso añadido exitosamente");
                                 deshabilitarTodo();
@@ -255,13 +275,14 @@ public class frmCurso extends javax.swing.JInternalFrame {
                                 buscado.setCiclo(ciclo);
                                 buscado.setCreditos(creditos);
                                 buscado.setHoras(horas);
-
+                                buscado.setVacantes(vacantes);
+                                ld.GuardarCurso();
                                 listar();
                                 mensaje("Curso modificado exitosamente");
                                 deshabilitarTodo();
                             }
-                        } catch (Exception error) {
-                            error("Ingrese un número de horas válido", txtHoras);
+                        } else {
+                            error("Ingrese un número de horas válido o de vacantes no mayor a 50", txtHoras);
                         }
                     } catch (Exception error) {
                         error("Ingrese una cantidad de créditos válida", txtCredito);
@@ -289,6 +310,7 @@ public class frmCurso extends javax.swing.JInternalFrame {
             boxCiclo.setSelectedIndex(buscado.getCiclo());
             txtCredito.setText("" + buscado.getCreditos());
             txtHoras.setText("" + buscado.getHoras());
+            txtVacantes.setText("" + buscado.getVacantes());
             tblCursos.setRowSelectionInterval(boxCodigo.getSelectedIndex(), boxCodigo.getSelectedIndex());
         } catch (Exception error) {
         }
@@ -298,12 +320,13 @@ public class frmCurso extends javax.swing.JInternalFrame {
         if (!btnAdicionar.isEnabled()) {
         } else {
             try {
-                Curso buscado = ld.buscarCurso(101 + tblCursos.getSelectedRow());
                 boxCodigo.setSelectedIndex(tblCursos.getSelectedRow());
+                Curso buscado = ld.buscarCurso(Integer.parseInt(boxCodigo.getSelectedItem().toString()));
                 txtAsignatura.setText(buscado.getAsignatura());
                 boxCiclo.setSelectedIndex(buscado.getCiclo());
                 txtCredito.setText("" + buscado.getCreditos());
                 txtHoras.setText("" + buscado.getHoras());
+                txtVacantes.setText("" + buscado.getVacantes());
             } catch (Exception error) {
             }
         }
@@ -320,6 +343,7 @@ public class frmCurso extends javax.swing.JInternalFrame {
         boxCiclo.setEnabled(ciclo);
         txtCredito.setEditable(creditos);
         txtHoras.setEditable(horas);
+        txtVacantes.setEditable(horas);
         btnAceptar.setEnabled(aceptar);
         btnCancelar.setEnabled(cancelar);
         btnAdicionar.setEnabled(adicionar);
@@ -332,18 +356,21 @@ public class frmCurso extends javax.swing.JInternalFrame {
         habilitar(false, false, false, false, false, false, false, true, true, true);
         limpiar();
     }
-
     void limpiar() {
         boxCodigo.setSelectedIndex(-1);
         txtAsignatura.setText("");
         boxCiclo.setSelectedIndex(-1);
         txtCredito.setText("");
         txtHoras.setText("");
+        txtVacantes.setText("");
     }
-
     void listarCboCodigo() {
         boxCodigo.removeAllItems();
         ld.cajaCurso(boxCodigo);
+    }
+    void listar() {
+        model.getDataVector().removeAllElements();
+        ld.Lista_Cursos(model);
     }
 
     void ajustarColumnas() {
@@ -353,11 +380,7 @@ public class frmCurso extends javax.swing.JInternalFrame {
         modelocolumna.getColumn(2).setPreferredWidth(jScrollPane1.getWidth() * 1);
         modelocolumna.getColumn(3).setPreferredWidth(jScrollPane1.getWidth() * 1);
         modelocolumna.getColumn(4).setPreferredWidth(jScrollPane1.getWidth() * 1);
-    }
-
-    void listar() {
-        model.getDataVector().removeAllElements();
-        ld.Lista_Cursos(model);
+        modelocolumna.getColumn(5).setPreferredWidth(jScrollPane1.getWidth() * 2);
     }
 
     int leerCodigo() {
@@ -379,6 +402,10 @@ public class frmCurso extends javax.swing.JInternalFrame {
     int leerHoras() {
         return Integer.parseInt(txtHoras.getText());
     }
+    
+    int leerVacantes() {
+        return Integer.parseInt(txtVacantes.getText());
+    }
 
     void mensaje(String s) {
         JOptionPane.showMessageDialog(this, s);
@@ -394,8 +421,8 @@ public class frmCurso extends javax.swing.JInternalFrame {
         txt.selectAll();
         txt.requestFocus();
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxCiclo;
     public javax.swing.JComboBox<String> boxCodigo;
@@ -409,11 +436,13 @@ public class frmCurso extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCursos;
     public javax.swing.JTextField txtAsignatura;
     public javax.swing.JTextField txtCredito;
     public javax.swing.JTextField txtHoras;
+    public javax.swing.JTextField txtVacantes;
     // End of variables declaration//GEN-END:variables
 }

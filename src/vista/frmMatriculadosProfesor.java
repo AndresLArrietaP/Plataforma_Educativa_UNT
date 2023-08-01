@@ -10,17 +10,18 @@ import modelo.Lista_Doble;
  *
  * @author acer
  */
-public class frmMatriculadosCurso extends javax.swing.JInternalFrame {
+public class frmMatriculadosProfesor extends javax.swing.JInternalFrame {
 
     Lista_Doble ld = new Lista_Doble();
 
     /**
      * Creates new form frmMatriculadosCurso
      */
-    public frmMatriculadosCurso() {
+    public frmMatriculadosProfesor() {
         initComponents();
         this.setLocation(150, 40);
-        this.setTitle("Listar Estudiantes Matriculados por curso");
+        this.setTitle("Listar Estudiantes Matriculados por profesor");
+        ld.CargarProfesor();
         ld.CargarEstudiante();
         ld.CargarCurso();
         ld.CargarMatricula();
@@ -40,9 +41,9 @@ public class frmMatriculadosCurso extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResultado = new javax.swing.JTextPane();
 
-        setBackground(new java.awt.Color(255, 153, 255));
+        setBackground(new java.awt.Color(153, 204, 255));
         setClosable(true);
-        setTitle("Listar Estudiantes Matriculados por curso");
+        setTitle("Listar Estudiantes Matriculados por profesor");
 
         btnListar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
         btnListar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/list.png"))); // NOI18N
@@ -66,7 +67,7 @@ public class frmMatriculadosCurso extends javax.swing.JInternalFrame {
                         .addGap(31, 31, 31)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(210, 210, 210)
+                        .addGap(213, 213, 213)
                         .addComponent(btnListar)))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
@@ -84,7 +85,7 @@ public class frmMatriculadosCurso extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        txtResultado.setText(ld.MostrarMatriculadosCurso());
+        txtResultado.setText(ld.MostrarMatriculadosProfesor());
     }//GEN-LAST:event_btnListarActionPerformed
 
 

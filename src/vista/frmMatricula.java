@@ -8,13 +8,17 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import modelo.Estudiante;
+import modelo.Profesor;
 import modelo.Calendario;
+import modelo.Curso;
 import modelo.Lista_Doble;
 import modelo.Matricula;
+import modelo.Repositorio;
 
 /**
  *
- * @author Delma
+ * @author acer
  */
 public class frmMatricula extends javax.swing.JInternalFrame {
 
@@ -27,6 +31,11 @@ public class frmMatricula extends javax.swing.JInternalFrame {
     public frmMatricula() {
         initComponents();
         this.setLocation(150, 40);
+        ld.CargarEstudiante();
+        ld.CargarProfesor();
+        ld.CargarCurso();
+        ld.CargarMatricula();
+        Repositorio.CargarRepo();
         model = new DefaultTableModel();
         model.addColumn("NÚM");
         model.addColumn("C.A.");
@@ -34,11 +43,11 @@ public class frmMatricula extends javax.swing.JInternalFrame {
         model.addColumn("APELLIDOS");
         model.addColumn("C.C.");
         model.addColumn("ASIGNATURA");
+        model.addColumn("PROFESOR");
         model.addColumn("FECHA");
         model.addColumn("HORA");
         model.addColumn("ACTIVO");
         tblMatricula.setModel(model);
-
         ajustarColumnas();
         listar();
         deshabilitarTodo();
@@ -55,11 +64,7 @@ public class frmMatricula extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         boxNumMatricula = new javax.swing.JComboBox<>();
-        boxCodAlum = new javax.swing.JComboBox<>();
         boxCodCurso = new javax.swing.JComboBox<>();
         btnAdicionar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
@@ -68,130 +73,297 @@ public class frmMatricula extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMatricula = new javax.swing.JTable();
-        txtAlum = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtVacantes = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        boxCodEstu = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtEstu = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtEstados = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        boxCodProfesor = new javax.swing.JComboBox<>();
+        txtProfe = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtEstadosP = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
         txtCurso = new javax.swing.JTextField();
-        txtEstado = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtMatriculados = new javax.swing.JTextField();
+        btnReciclar = new javax.swing.JButton();
 
         setClosable(true);
         setResizable(true);
         setTitle("Registro de Matricula");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(0, 51, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Numero de Matricula:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jLabel2.setText("Codigo del Alumno:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jLabel3.setText("Estado:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jLabel4.setText("Codigo de Curso:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
-
         boxNumMatricula.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
         boxNumMatricula.setEnabled(false);
-        jPanel1.add(boxNumMatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 130, -1));
-
-        boxCodAlum.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        boxCodAlum.setEnabled(false);
-        jPanel1.add(boxCodAlum, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 130, -1));
+        boxNumMatricula.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxNumMatriculaItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(boxNumMatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 150, -1));
 
         boxCodCurso.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
         boxCodCurso.setEnabled(false);
-        jPanel1.add(boxCodCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 130, -1));
+        boxCodCurso.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxCodCursoItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(boxCodCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 140, -1));
 
         btnAdicionar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnAdicionar.setText("Adicionar");
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/add.png"))); // NOI18N
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 110, 40));
+        jPanel1.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, 50, 50));
 
+        btnAceptar.setBackground(new java.awt.Color(102, 255, 51));
         btnAceptar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnAceptar.setText("Aceptar");
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/check.png"))); // NOI18N
         btnAceptar.setEnabled(false);
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAceptarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 110, 40));
+        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 50, 50));
 
         btnModificar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnModificar.setText("Modificar");
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/edit.png"))); // NOI18N
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 110, 40));
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 90, 50, 50));
 
         btnEliminar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnEliminar.setText("Eliminar");
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/delete.png"))); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 110, 40));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 160, 50, 50));
 
+        btnCancelar.setBackground(new java.awt.Color(255, 255, 51));
         btnCancelar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cross.png"))); // NOI18N
         btnCancelar.setEnabled(false);
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 110, 40));
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 280, 50, 50));
 
         tblMatricula.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Num", "C A", "Nombres", "Apellidos", "C C", "Asignatura", "Fecha", "Hora", "Activo"
+                "Num", "C A", "Nombres", "Apellidos", "C C", "Asignatura", "Fecha", "Hora", "Activo", "Profesor"
             }
         ));
+        tblMatricula.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMatriculaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblMatricula);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 610, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 680, 140));
 
-        txtAlum.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        txtAlum.setEnabled(false);
-        jPanel1.add(txtAlum, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 270, -1));
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Codigo de Curso:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, -1, -1));
+
+        txtVacantes.setBackground(new java.awt.Color(204, 255, 153));
+        txtVacantes.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtVacantes.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtVacantes.setEnabled(false);
+        jPanel1.add(txtVacantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 200, 60, -1));
+
+        jLabel8.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Vacantes:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 200, -1, -1));
+
+        jPanel2.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estudiante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        boxCodEstu.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        boxCodEstu.setEnabled(false);
+        boxCodEstu.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxCodEstuItemStateChanged(evt);
+            }
+        });
+        jPanel2.add(boxCodEstu, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 130, -1));
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Codigo del Estudiante:");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+
+        txtEstu.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        txtEstu.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtEstu.setEnabled(false);
+        txtEstu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEstuActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtEstu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 280, -1));
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Estado:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+
+        txtEstados.setEnabled(false);
+        jPanel2.add(txtEstados, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 140, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 300, 120));
+
+        jPanel3.setBackground(new java.awt.Color(102, 51, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Profesor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel3.setForeground(new java.awt.Color(240, 240, 240));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Codigo del Profesor:");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+
+        boxCodProfesor.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        boxCodProfesor.setEnabled(false);
+        boxCodProfesor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                boxCodProfesorItemStateChanged(evt);
+            }
+        });
+        jPanel3.add(boxCodProfesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 130, -1));
+
+        txtProfe.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        txtProfe.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtProfe.setEnabled(false);
+        txtProfe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProfeActionPerformed(evt);
+            }
+        });
+        jPanel3.add(txtProfe, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 270, -1));
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Estado:");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+
+        txtEstadosP.setEnabled(false);
+        txtEstadosP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEstadosPActionPerformed(evt);
+            }
+        });
+        jPanel3.add(txtEstadosP, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 130, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 290, 120));
+
+        jPanel4.setBackground(new java.awt.Color(204, 0, 255));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Curso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtCurso.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        txtCurso.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtCurso.setEnabled(false);
-        jPanel1.add(txtCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 270, -1));
+        jPanel4.add(txtCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 270, -1));
 
-        txtEstado.setEnabled(false);
-        jPanel1.add(txtEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 130, -1));
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Matriculados:");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 480));
+        txtMatriculados.setBackground(new java.awt.Color(204, 204, 255));
+        txtMatriculados.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtMatriculados.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtMatriculados.setEnabled(false);
+        jPanel4.add(txtMatriculados, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 60, -1));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 490, 90));
+
+        btnReciclar.setBackground(new java.awt.Color(255, 255, 51));
+        btnReciclar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnReciclar.setText("RECICLAR");
+        btnReciclar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReciclarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnReciclar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 310, 110, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 490));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-
+        limpiar();
+        habilitar(false, true, false, true, false, false, false, true, false, true, true, false, true, false);
+        boxNumMatricula.addItem(String.valueOf(ld.codigoCorelativoMatri()));
+        boxNumMatricula.setSelectedIndex(ld.tamañoMatricula());
+        boxCodEstu.requestFocus();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
+        if (!btnAdicionar.isEnabled()) {
+            deshabilitarTodo();
+        }
+        habilitar(true, false, false, false, false, false, false, true, false, true, true, true, false, false);
+        boxNumMatricula.requestFocus();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        int numMatricula = leerNumeroMatricula();
+        int codAlumno = leerCodigoAlumno();
+        int codCurso = leerCodigoCurso();
+        
+        Matricula buscado = ld.buscarMatricula(numMatricula);
+        if (ld.buscarEstudiante(codAlumno).getEstado() == 1) {
+
+            ld.eliminarMatricula(buscado.getNumeroMatricula());
+            ld.buscarEstudiante(codAlumno).setEstado(0);
+            Curso cur=ld.buscarCurso(codCurso);
+            int mat = cur.getMatriculados();
+            cur.setMatriculados(mat-1);
+            ld.GuardarEstudiantes();
+            ld.GuardarMatricula();
+            listar();
+            mensaje("Matrícula eliminada exitosamente");
+            deshabilitarTodo();
+
+        } else {
+            error("No es posible eliminar la matrícula, el alumno se encuentra retirado", boxNumMatricula);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -199,24 +371,38 @@ public class frmMatricula extends javax.swing.JInternalFrame {
             int numMatricula = leerNumeroMatricula();
             try {
                 int codAlumno = leerCodigoAlumno();
+                int codProfesor = leerCodigoProfesor();
                 try {
                     int codCurso = leerCodigoCurso();
                     if (!btnAdicionar.isEnabled()) {
-                        if (ld.buscarAlumno(codAlumno).getEstado() == 0) {
-                            Matricula nuevo = new Matricula(numMatricula, codAlumno, codCurso, Calendario.fechaActual(), Calendario.horaActual());
-                            ld.buscarAlumno(codAlumno).setEstado(1);
-                            
-                            ld.insertarMatricula(nuevo);
-                            listar();
-                            mensaje("Nueva matrícula añadida exitosamente");
-                            deshabilitarTodo();
+                        if (ld.buscarEstudiante(codAlumno).getEstado() == 0) {
+                            int vacantes = leerVacantes();
+                            Curso enc = ld.buscarCurso(codCurso);
+                            if(enc.getMatriculados()<=vacantes){
+                                Matricula nuevo = new Matricula(numMatricula, codAlumno,codProfesor, codCurso, Calendario.fechaActual(), Calendario.horaActual());
+                                ld.buscarEstudiante(codAlumno).setEstado(1);
+                                ld.buscarProfesor(codProfesor).setEstado(1);
+                                Curso cur=ld.buscarCurso(codCurso);
+                                int mat = cur.getMatriculados();
+                                cur.setMatriculados(mat+1);
+                                ld.insertarMatricula(nuevo);
+                                ld.GuardarMatricula();
+                                ld.GuardarEstudiantes();
+                                ld.GuardarProfesores();
+                                ld.GuardarCurso();
+                                listar();
+                                mensaje("Nueva matrícula añadida exitosamente");
+                                deshabilitarTodo();
+                            } else{
+                                JOptionPane.showMessageDialog(this, "VACANTES AGOTADAS");
+                            }
                         } else {
-                            error("No es posible completar la acción, el alumno ya se encuentra matriculado", boxCodAlum);
+                            error("No es posible completar la acción, el alumno ya se encuentra matriculado", boxCodEstu);
                         }
                     } else if (!btnModificar.isEnabled()) {
                         Matricula buscado = ld.buscarMatricula(numMatricula);
                         buscado.setCodigoCurso(codCurso);
-                        
+                        ld.GuardarMatricula();
                         listar();
                         mensaje("Matrícula modificada exitosamente");
                         deshabilitarTodo();
@@ -225,7 +411,7 @@ public class frmMatricula extends javax.swing.JInternalFrame {
                     error("Inserte un código de curso", boxCodCurso);
                 }
             } catch (Exception error) {
-                error("Inserte un código de alumno", boxCodAlum);
+                error("Inserte un código de alumno y profesor", boxCodEstu);
             }
         } catch (Exception error) {
             error("Seleccione un número de matrícula", boxNumMatricula);
@@ -236,12 +422,99 @@ public class frmMatricula extends javax.swing.JInternalFrame {
         deshabilitarTodo();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    void habilitar(boolean numMatricula, boolean codigoAlumno, boolean alumno, boolean estadoAlumno, boolean codigoCurso,
+    private void tblMatriculaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMatriculaMouseClicked
+        if (btnAdicionar.isEnabled()) {
+            try {
+                boxNumMatricula.setSelectedIndex(tblMatricula.getSelectedRow());
+                Matricula buscado = ld.buscarMatricula(Integer.parseInt(boxNumMatricula.getSelectedItem().toString()));
+                boxCodEstu.setSelectedItem(buscado.getCodigoEstudiante());
+                boxCodProfesor.setSelectedItem(buscado.getCodigoProfesor());
+                boxCodCurso.setSelectedItem(buscado.getCodigoCurso());
+            } catch (Exception error) {
+
+            }
+        }
+    }//GEN-LAST:event_tblMatriculaMouseClicked
+
+    private void boxCodCursoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxCodCursoItemStateChanged
+        try {
+            int codCurso = leerCodigoCurso();
+            Curso buscado = ld.buscarCurso(codCurso);
+            txtCurso.setText(buscado.getAsignatura());
+            txtVacantes.setText(String.valueOf(buscado.getVacantes()));
+            txtMatriculados.setText(String.valueOf(buscado.getMatriculados()));
+        } catch (Exception error) {
+        }
+    }//GEN-LAST:event_boxCodCursoItemStateChanged
+
+    private void boxCodEstuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxCodEstuItemStateChanged
+        try {
+            int codAlumno = leerCodigoAlumno();
+            Estudiante buscado = ld.buscarEstudiante(codAlumno);
+            txtEstu.setText(buscado.getNombres() + " " + buscado.getApellidos());
+            txtEstados.setText(nombreEstado(buscado.getEstado()));
+        } catch (Exception error) {
+
+        }
+    }//GEN-LAST:event_boxCodEstuItemStateChanged
+
+    private void boxNumMatriculaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxNumMatriculaItemStateChanged
+        try {
+            int numMatricula = leerNumeroMatricula();
+            Matricula buscado = ld.buscarMatricula(numMatricula);
+            boxCodEstu.setSelectedItem(buscado.getCodigoEstudiante());
+            boxCodProfesor.setSelectedItem(buscado.getCodigoProfesor());
+            boxCodCurso.setSelectedItem(buscado.getCodigoCurso());
+            tblMatricula.setRowSelectionInterval(boxNumMatricula.getSelectedIndex(), boxNumMatricula.getSelectedIndex());
+        } catch (Exception error) {
+        }
+    }//GEN-LAST:event_boxNumMatriculaItemStateChanged
+
+    private void txtEstuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstuActionPerformed
+    }//GEN-LAST:event_txtEstuActionPerformed
+
+    private void boxCodProfesorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxCodProfesorItemStateChanged
+        try {
+            int codProfesor = leerCodigoProfesor();
+            Profesor buscado = ld.buscarProfesor(codProfesor);
+            txtProfe.setText(buscado.getNombres() + " " + buscado.getApellidos());
+            txtEstadosP.setText(nombreEstado(buscado.getEstado()));
+        } catch (Exception error) {
+
+        }
+    }//GEN-LAST:event_boxCodProfesorItemStateChanged
+
+    private void txtProfeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProfeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProfeActionPerformed
+
+    private void txtEstadosPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadosPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEstadosPActionPerformed
+
+    private void btnReciclarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReciclarActionPerformed
+        if(JOptionPane.showConfirmDialog(null, "¿SEGURO QUE DESEA ELIMINAR LA MATRÍCULA\n DE LOS ESTUDIANTES RETIRADOS? \n(la acción es irreversible)",
+            "Confirmador", JOptionPane.YES_NO_CANCEL_OPTION) ==JOptionPane.YES_OPTION){   
+            ld.Eliminar_Retirados();
+            ld.GuardarMatricula();
+            ld.GuardarEstudiantes();
+            ld.GuardarProfesores();
+            ld.GuardarCurso();
+            listar();
+            mensaje("Matriculas con retiro, quitadas");
+         }
+    }//GEN-LAST:event_btnReciclarActionPerformed
+
+    void habilitar(boolean numMatricula, boolean codigoAlumno, boolean alumno, boolean codigoProfesor,boolean profesor, 
+            boolean estadoAlumno , boolean estadoProfesor, boolean codigoCurso,
             boolean curso, boolean aceptar, boolean cancelar, boolean adicionar, boolean modificar, boolean eliminar) {
         boxNumMatricula.setEnabled(numMatricula);
-        boxCodAlum.setEnabled(codigoAlumno);
-        txtAlum.setEditable(alumno);
-        txtEstado.setEditable(estadoAlumno);
+        boxCodEstu.setEnabled(codigoAlumno);
+        boxCodProfesor.setEnabled(codigoProfesor);
+        txtEstu.setEditable(alumno);
+        txtProfe.setEditable(profesor);
+        txtEstados.setEditable(estadoAlumno);
+        txtEstadosP.setEditable(estadoProfesor);
         boxCodCurso.setEnabled(codigoCurso);
         txtCurso.setEditable(curso);
         btnAceptar.setEnabled(aceptar);
@@ -254,33 +527,47 @@ public class frmMatricula extends javax.swing.JInternalFrame {
     void deshabilitarTodo() {
         listarCboNumMatricula();
         listarCboCodAlumno();
+        listarCboCodProfesor();
         listarCboCodCurso();
-        habilitar(false, false, false, false, false, false, false, false, true, true, true);
+        habilitar(false, false, false, false, false, false, false, false, false, false, false, true, true, true);
         limpiar();
     }
 
     void limpiar() {
         boxNumMatricula.setSelectedIndex(-1);
-        boxCodAlum.setSelectedIndex(-1);
-        txtAlum.setText("");
-        txtEstado.setText("");
+        boxCodEstu.setSelectedIndex(-1);
+        boxCodProfesor.setSelectedIndex(-1);
+        txtEstu.setText("");
+        txtProfe.setText("");
+        txtEstados.setText("");
+        txtEstadosP.setText("");
         boxCodCurso.setSelectedIndex(-1);
         txtCurso.setText("");
     }
 
     void listarCboNumMatricula() {
         boxNumMatricula.removeAllItems();
-        ld.cajaMatricula(boxCodAlum);
+        ld.cajaMatricula(boxNumMatricula);
     }
 
     void listarCboCodAlumno() {
-        boxCodAlum.removeAllItems();
-        ld.cajaAlum(boxCodAlum);
+        boxCodEstu.removeAllItems();
+        ld.cajaEstu(boxCodEstu);
+    }
+    
+    void listarCboCodProfesor() {
+        boxCodProfesor.removeAllItems();
+        ld.cajaProf(boxCodProfesor);
     }
 
     void listarCboCodCurso() {
         boxCodCurso.removeAllItems();
         ld.cajaCurso(boxCodCurso);
+    }
+
+    void listar() {
+        model.getDataVector().removeAllElements();
+        ld.Lista_Matricula(model);
     }
 
     void ajustarColumnas() {
@@ -291,14 +578,10 @@ public class frmMatricula extends javax.swing.JInternalFrame {
         modeloColuma.getColumn(3).setPreferredWidth(jScrollPane1.getWidth() * 5);
         modeloColuma.getColumn(4).setPreferredWidth(jScrollPane1.getWidth() * 1);
         modeloColuma.getColumn(5).setPreferredWidth(jScrollPane1.getWidth() * 7);
-        modeloColuma.getColumn(6).setPreferredWidth(jScrollPane1.getWidth() * 2);
+        modeloColuma.getColumn(6).setPreferredWidth(jScrollPane1.getWidth() * 7);
         modeloColuma.getColumn(7).setPreferredWidth(jScrollPane1.getWidth() * 2);
-        modeloColuma.getColumn(8).setPreferredWidth(jScrollPane1.getWidth() * 1);
-    }
-
-    void listar() {
-        model.getDataVector().removeAllElements();
-        ld.Lista_Cursos(model);//asdasdawsdddddddddddddddddddddddddddddddddddddddddddddddd
+        modeloColuma.getColumn(8).setPreferredWidth(jScrollPane1.getWidth() * 2);
+        modeloColuma.getColumn(9).setPreferredWidth(jScrollPane1.getWidth() * 1);
     }
 
     int leerNumeroMatricula() {
@@ -306,15 +589,52 @@ public class frmMatricula extends javax.swing.JInternalFrame {
     }
 
     int leerCodigoAlumno() {
-        return Integer.parseInt(boxCodAlum.getSelectedItem().toString());
+        return Integer.parseInt(boxCodEstu.getSelectedItem().toString());
     }
 
     String leerAlumno() {
-        return txtAlum.getText().trim().toUpperCase();
+        return txtEstu.getText().trim().toUpperCase();
     }
 
     String leerEstadoAlumno() {
-        return txtEstado.getText();
+        return txtEstados.getText();
+    }
+    
+    int leerCodigoProfesor() {
+        return Integer.parseInt(boxCodProfesor.getSelectedItem().toString());
+    }
+    
+    String leerProfesor() {
+        return txtProfe.getText().trim().toUpperCase();
+    }
+
+    String leerEstadoProfesor() {
+        return txtEstadosP.getText();
+    }
+
+    int leerCodigoCurso() {
+        return Integer.parseInt(boxCodCurso.getSelectedItem().toString());
+    }
+
+    String leerCurso() {
+        return txtCurso.getText().trim().toUpperCase();
+    }
+    
+    int leerVacantes() {
+        return Integer.parseInt(txtVacantes.getText());
+    }
+    
+    int leerMatriculados() {
+        return Integer.parseInt(txtMatriculados.getText());
+    }
+
+    void mensaje(String s) {
+        JOptionPane.showMessageDialog(this, s);
+    }
+
+    void error(String s, JComboBox cbo) {
+        JOptionPane.showMessageDialog(this, s, "", JOptionPane.ERROR_MESSAGE);
+        cbo.requestFocus();
     }
 
     String nombreEstado(int i) {
@@ -330,45 +650,37 @@ public class frmMatricula extends javax.swing.JInternalFrame {
         }
     }
 
-    String activo(int i) {
-        return i == 1 ? "Sí" : "No";
-    }
-
-    int leerCodigoCurso() {
-        return Integer.parseInt(boxCodCurso.getSelectedItem().toString());
-    }
-
-    String leerCurso() {
-        return txtCurso.getText().trim().toUpperCase();
-    }
-
-    void mensaje(String s) {
-        JOptionPane.showMessageDialog(this, s);
-    }
-
-    void error(String s, JComboBox cbo) {
-        JOptionPane.showMessageDialog(this, s, "", JOptionPane.ERROR_MESSAGE);
-        cbo.requestFocus();
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> boxCodAlum;
     private javax.swing.JComboBox<String> boxCodCurso;
+    private javax.swing.JComboBox<String> boxCodEstu;
+    private javax.swing.JComboBox<String> boxCodProfesor;
     private javax.swing.JComboBox<String> boxNumMatricula;
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnReciclar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblMatricula;
-    private javax.swing.JTextField txtAlum;
     private javax.swing.JTextField txtCurso;
-    private javax.swing.JTextField txtEstado;
+    private javax.swing.JTextField txtEstados;
+    private javax.swing.JTextField txtEstadosP;
+    private javax.swing.JTextField txtEstu;
+    private javax.swing.JTextField txtMatriculados;
+    private javax.swing.JTextField txtProfe;
+    private javax.swing.JTextField txtVacantes;
     // End of variables declaration//GEN-END:variables
 }

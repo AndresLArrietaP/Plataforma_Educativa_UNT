@@ -4,18 +4,27 @@
  */
 package vista;
 
+import modelo.Lista_Doble;
+
 /**
  *
- * @author Jeremymr2
+ * @author acer
  */
-public class frmReportePendiente extends javax.swing.JInternalFrame {
+public class frmMatriculaPendiente extends javax.swing.JInternalFrame {
+
+    Lista_Doble ld = new Lista_Doble();
 
     /**
      * Creates new form NewJInternalFrame
      */
-    public frmReportePendiente() {
+    public frmMatriculaPendiente() {
         initComponents();
         this.setLocation(150, 40);
+        this.setTitle("Listar Matriculas pendientes");
+        ld.CargarEstudiante();
+        ld.CargarCurso();
+        ld.CargarMatricula();
+        ld.CargarRetiro();
     }
 
     /**
@@ -27,17 +36,25 @@ public class frmReportePendiente extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        txtResultado = new javax.swing.JTextPane();
 
+        setBackground(new java.awt.Color(255, 255, 153));
         setClosable(true);
+        setTitle("Listar Matrículas pendientes");
 
-        jButton1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jButton1.setText("Listar");
+        btnListar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        btnListar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/list.png"))); // NOI18N
+        btnListar.setText("Listar");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
 
-        jTextPane1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jScrollPane1.setViewportView(jTextPane1);
+        txtResultado.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jScrollPane1.setViewportView(txtResultado);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -49,27 +66,31 @@ public class frmReportePendiente extends javax.swing.JInternalFrame {
                         .addGap(34, 34, 34)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(225, 225, 225)
-                        .addComponent(jButton1)))
+                        .addGap(200, 200, 200)
+                        .addComponent(btnListar)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addContainerGap()
+                .addComponent(btnListar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        txtResultado.setText(ld.MostrarEstuPendiente());
+    }//GEN-LAST:event_btnListarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnListar;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane txtResultado;
     // End of variables declaration//GEN-END:variables
 }

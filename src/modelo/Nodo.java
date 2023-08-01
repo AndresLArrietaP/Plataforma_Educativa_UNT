@@ -5,15 +5,22 @@ public class Nodo {
     private Nodo siguiente;
     private Nodo anterior;
 
-    private Alumno alum;
+    private Estudiante estu;
+    private Profesor prof;
     private Curso curso;
     private Matricula matricula;
     private Retiro retiro;
-    
-    public Nodo(Alumno alumno, Nodo ante, Nodo sig) {
+   
+    public Nodo(Estudiante estudiante, Nodo ante, Nodo sig) {
         siguiente = sig;
         anterior = ante;
-        alum = alumno;
+        estu = estudiante;
+    }
+    
+    public Nodo(Profesor profesor, Nodo ante, Nodo sig) {
+        siguiente = sig;
+        anterior = ante;
+        prof = profesor;
     }
     
     public Nodo(Curso cur, Nodo ante, Nodo sig) {
@@ -50,12 +57,20 @@ public class Nodo {
         this.anterior = anterior;
     }
 
-    public Alumno getAlum() {
-        return alum;
+    public Estudiante getEstu() {
+        return estu;
     }
 
-    public void setAlum(Alumno alum) {
-        this.alum = alum;
+    public void setEstu(Estudiante estu) {
+        this.estu = estu;
+    }
+    
+    public Profesor getProf() {
+        return prof;
+    }
+
+    public void setProf(Profesor prof) {
+        this.prof = prof;
     }
 
     public Curso getCurso() {

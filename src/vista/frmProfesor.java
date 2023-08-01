@@ -11,15 +11,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import modelo.Alumno;
+import modelo.Profesor;
 import modelo.Lista_Doble;
 import modelo.Nodo;
+import modelo.Repositorio;
 
 /**
  *
- * @author Delma
+ * @author acer
  */
-public class frmAlumno extends javax.swing.JInternalFrame {
+public class frmProfesor extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Alumno
@@ -27,11 +28,12 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     Lista_Doble ld = new Lista_Doble();
     DefaultTableModel model;
 
-    public frmAlumno() {
+    public frmProfesor() {
         initComponents();
         this.setLocation(150, 40);
-        this.setTitle("Mantenimiento de Alumnos");
-        //ld.CargarAlumno();
+        this.setTitle("Gestión de Profesores");
+        ld.CargarProfesor();
+        Repositorio.CargarRepo();
         model = new DefaultTableModel();
         model.addColumn("CÓDIGO");
         model.addColumn("NOMBRES");
@@ -40,7 +42,7 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         model.addColumn("EDAD");
         model.addColumn("CELULAR");
         model.addColumn("ESTADO");
-        tblAlumnos.setModel(model);
+        tblProfesores.setModel(model);
         ajustarColumnas();
         listar();
         deshabilitarTodo();
@@ -77,35 +79,36 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         btnModificar = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblAlumnos = new javax.swing.JTable();
+        tblProfesores = new javax.swing.JTable();
 
         setClosable(true);
-        setTitle("Mantenimiento de Alumnos");
+        setTitle("Gestión de Profesores");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(102, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel1.setText("Codigo:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel2.setText("Nombre:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel3.setText("Apellidos:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel4.setText("DNI:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel5.setText("Celular:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel6.setText("Estado:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, -1));
 
@@ -121,63 +124,66 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         jPanel1.add(txtDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 102, -1));
         jPanel1.add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 102, -1));
 
-        boxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Registrado", "Matriculado", "Retirado" }));
+        boxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo", "Asignado" }));
         boxEstado.setEnabled(false);
         jPanel1.add(boxEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 102, -1));
 
-        jLabel7.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         jLabel7.setText("Edad:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, -1, -1));
         jPanel1.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 35, -1));
 
         btnAceptar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnAceptar.setText("Aceptar");
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/check.png"))); // NOI18N
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAceptarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 100, 40));
+        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 50, 50));
 
         btnCancelar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cross.png"))); // NOI18N
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 100, 40));
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 50, 50));
 
         btnEliminar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnEliminar.setText("Eliminar");
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/delete.png"))); // NOI18N
+        btnEliminar.setText("ELIMINAR");
         btnEliminar.setEnabled(false);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 150, 50));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 160, 50));
 
         btnModificar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnModificar.setText("Modificar");
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/edit.png"))); // NOI18N
+        btnModificar.setText("MODIFICAR");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 150, 50));
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 160, 50));
 
         btnAdicionar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        btnAdicionar.setText("Adicionar");
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/add.png"))); // NOI18N
+        btnAdicionar.setText("AGREGAR");
         btnAdicionar.setEnabled(false);
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 150, 50));
+        jPanel1.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 160, 50));
 
-        tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
+        tblProfesores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -185,23 +191,23 @@ public class frmAlumno extends javax.swing.JInternalFrame {
                 "Codigo", "Nombres", "Apellidos", "DNI", "Edad", "Celular", "Estado"
             }
         ));
-        tblAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblProfesores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblAlumnosMouseClicked(evt);
+                tblProfesoresMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblAlumnos);
+        jScrollPane1.setViewportView(tblProfesores);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 670, 140));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 690, 470));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 480));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         try {
-            int codAlumno = leerCodigo();
+            int codProfesor = leerCodigo();
             String nombre = leerNombres();
             if (nombre.length() != 0) {
                 String apellidos = leerApellidos();
@@ -213,34 +219,35 @@ public class frmAlumno extends javax.swing.JInternalFrame {
                                 int edad = leerEdad();
                                 try {
                                     int celular = leerCelular();
-                                    int estado = leerEstado();
-                                    if (estado != -1) {
+                                    int estado = leerEstado();                                                                        
+                                    if (estado != -1) {                                        
                                         if (!btnAdicionar.isEnabled()) {
+                                            //System.out.println(estado);
                                             if (!existeDNI(dni)) {
-                                                Alumno nuevo = new Alumno(codAlumno, nombre, apellidos, 
-                                                                            dni, edad, celular, estado);
-                                                ld.insertarAlum(nuevo);
-                                                ld.GuardarAlumnos();
+                                                Profesor nuevo = new Profesor(codProfesor, edad, celular, estado
+                                                        ,nombre,apellidos,dni);
+                                                ld.insertarProf(nuevo);
+                                                ld.GuardarProfesores();
                                                 listar();
-                                                mensaje("Nuevo alumno añadido exitosamente");
+                                                mensaje("Nuevo profesor añadido exitosamente");
                                                 deshabilitarTodo();
                                             } else {
                                                 error("No puede ingresar un DNI ya existente", txtDNI);
                                             }
                                         } else if (!btnModificar.isEnabled()) {
                                             //Al darle en el alumno se cambiara 
-                                            Alumno buscado = ld.buscarAlumno(codAlumno);
+                                            Profesor buscado = ld.buscarProfesor(codProfesor);
                                             buscado.setNombres(nombre);
                                             buscado.setApellidos(apellidos);
                                             buscado.setEdad(edad);
                                             buscado.setCelular(celular);
-                                            ld.GuardarAlumnos();
+                                            ld.GuardarProfesores();
                                             listar();
-                                            mensaje("Alumno modificado exitosamente");
+                                            mensaje("Profesor modificado exitosamente");
                                             deshabilitarTodo();
                                         }
                                     } else {
-                                        error("Especifique el estado del alumno", boxEstado);
+                                        error("Especifique el estado del profesor", boxEstado);
                                     }
                                 } catch (Exception error) {
                                     error("Ingrese un número de celular válido", txtCelular);
@@ -255,13 +262,13 @@ public class frmAlumno extends javax.swing.JInternalFrame {
                         error("Ingrese un DNI válido", txtDNI);
                     }
                 } else {
-                    error("Ingrese los apellidos del alumno", txtApellidos);
+                    error("Ingrese los apellidos del profesor", txtApellidos);
                 }
             } else {
-                error("Ingrese el nombre del alumno", txtNombre);
+                error("Ingrese el nombre del profesor", txtNombre);
             }
         } catch (Exception error) {
-            error("Seleccione un código de alumno", boxCodigo);
+            error("Seleccione un código de profesor", boxCodigo);
         }
 
     }//GEN-LAST:event_btnAceptarActionPerformed
@@ -274,8 +281,8 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         limpiar();
         habilitar(false, true, true, true, true, true, false, true, true, false, true, false);
         boxEstado.setSelectedIndex(0);
-        boxCodigo.addItem(String.valueOf(ld.codigoCorrelativo()));
-        boxCodigo.setSelectedIndex(ld.tamañoAlum());
+        boxCodigo.addItem(String.valueOf(ld.codigoCorrelativoP()));
+        boxCodigo.setSelectedIndex(ld.tamañoProf());
         txtNombre.requestFocus();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
@@ -289,29 +296,29 @@ public class frmAlumno extends javax.swing.JInternalFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
-            int codAlumno = leerCodigo();
-            Alumno buscado = ld.buscarAlumno(codAlumno);
-            if (buscado.getEstado() == 0) { // registrado
-                ld.eliminarAlum(codAlumno);
-                //int fila = tblAlumnos.getSelectedRow();
-                //model.removeRow(fila);
+            int codProfesor = leerCodigo();
+            Profesor buscado = ld.buscarProfesor(codProfesor);
+            if (buscado.getEstado() == 0) {
+                ld.eliminarProf(codProfesor);
                 listar();
-                mensaje("Alumno eliminado exitosamente");
+                mensaje("Profesor eliminado exitosamente");
                 deshabilitarTodo();
-                ld.GuardarAlumnos();
+                ld.GuardarProfesores();
+                Repositorio.ProfElim++;
+                Repositorio.GuardarRepo();
             } else {
-                error("No puede eliminar a un alumno ya matriculado", boxCodigo);
+                error("No puede eliminar a un profesor con una asignatura que dictar", boxCodigo);
             }
         } catch (Exception error) {
-            error("Seleccione un código de alumno", boxCodigo);
+            error("Seleccione un código de profesor", boxCodigo);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void tblAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMouseClicked
+    private void tblProfesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProfesoresMouseClicked
         if (btnAdicionar.isEnabled()) {
             try {
-                Alumno buscado = ld.buscarAlumno(202010001 + tblAlumnos.getSelectedRow());
-                boxCodigo.setSelectedIndex(tblAlumnos.getSelectedRow());
+                boxCodigo.setSelectedIndex(tblProfesores.getSelectedRow());
+                Profesor buscado = ld.buscarProfesor(Integer.parseInt(boxCodigo.getSelectedItem().toString()));
                 txtNombre.setText(buscado.getNombres());
                 txtApellidos.setText(buscado.getApellidos());
                 txtDNI.setText(buscado.getDni());
@@ -321,20 +328,19 @@ public class frmAlumno extends javax.swing.JInternalFrame {
             } catch (Exception error) {
             }
         }
-    }//GEN-LAST:event_tblAlumnosMouseClicked
+    }//GEN-LAST:event_tblProfesoresMouseClicked
 
     private void boxCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxCodigoItemStateChanged
-        // TODO add your handling code here:
         try {
-            int codAlumno = leerCodigo();
-            Alumno buscado = ld.buscarAlumno(codAlumno);
+            int codProfesor = leerCodigo();
+            Profesor buscado = ld.buscarProfesor(codProfesor);
             txtNombre.setText(buscado.getNombres());
             txtApellidos.setText(buscado.getApellidos());
             txtDNI.setText(buscado.getDni());
             txtEdad.setText("" + buscado.getEdad());
             txtCelular.setText("" + buscado.getCelular());
             boxEstado.setSelectedIndex(buscado.getEstado());
-            tblAlumnos.setRowSelectionInterval(boxCodigo.getSelectedIndex(), boxCodigo.getSelectedIndex());
+            tblProfesores.setRowSelectionInterval(boxCodigo.getSelectedIndex(), boxCodigo.getSelectedIndex());
         } catch (Exception error) {
 
         }
@@ -369,18 +375,34 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     }
 
     boolean existeDNI(String dni) {
-        return ld.ValidarDni(dni);
+        return ld.ValidarDniP(dni);
     }
 
     void listar() {
         model.getDataVector().removeAllElements();
-        ld.Lista_Alumnos(model);
+        ld.Lista_Profesores(model);
     }
 
     void mensaje(String s) {
         JOptionPane.showMessageDialog(this, s);
     }
-    
+
+    void listarCboCodigo() {
+        boxCodigo.removeAllItems();
+        ld.cajaProf(boxCodigo);
+    }
+
+    void error(String s, JComboBox cbo) {
+        JOptionPane.showMessageDialog(this, s, "", JOptionPane.ERROR_MESSAGE);
+        cbo.requestFocus();
+    }
+
+    void error(String s, JTextField txt) {
+        JOptionPane.showMessageDialog(this, s, "", JOptionPane.ERROR_MESSAGE);
+        txt.selectAll();
+        txt.requestFocus();
+    }
+
     void habilitar(boolean codigo, boolean nombre, boolean apellidos, boolean dni, boolean edad, boolean celular,
             boolean estado, boolean aceptar, boolean cancelar, boolean adicionar, boolean modificar, boolean eliminar) {
         boxCodigo.setEnabled(codigo);
@@ -413,32 +435,15 @@ public class frmAlumno extends javax.swing.JInternalFrame {
         boxEstado.setSelectedIndex(-1);
     }
 
-    void listarCboCodigo() {
-        boxCodigo.removeAllItems();
-
-        ld.cajaAlum(boxCodigo);
-    }
-
-    void error(String s, JComboBox cbo) {
-        JOptionPane.showMessageDialog(this, s, "", JOptionPane.ERROR_MESSAGE);
-        cbo.requestFocus();
-    }
-
-    void error(String s, JTextField txt) {
-        JOptionPane.showMessageDialog(this, s, "", JOptionPane.ERROR_MESSAGE);
-        txt.selectAll();
-        txt.requestFocus();
-    }
-
     void ajustarColumnas() {
-        TableColumnModel modeloColuma = tblAlumnos.getColumnModel();
-        modeloColuma.getColumn(0).setPreferredWidth(jScrollPane1.getWidth()*2);
-        modeloColuma.getColumn(1).setPreferredWidth(jScrollPane1.getWidth()*4);
-        modeloColuma.getColumn(2).setPreferredWidth(jScrollPane1.getWidth()*4);
-        modeloColuma.getColumn(3).setPreferredWidth(jScrollPane1.getWidth()*2);
-        modeloColuma.getColumn(4).setPreferredWidth(jScrollPane1.getWidth()*1);
-        modeloColuma.getColumn(5).setPreferredWidth(jScrollPane1.getWidth()*2);
-        modeloColuma.getColumn(6).setPreferredWidth(jScrollPane1.getWidth()*3);
+        TableColumnModel modeloColuma = tblProfesores.getColumnModel();
+        modeloColuma.getColumn(0).setPreferredWidth(jScrollPane1.getWidth() * 2);
+        modeloColuma.getColumn(1).setPreferredWidth(jScrollPane1.getWidth() * 4);
+        modeloColuma.getColumn(2).setPreferredWidth(jScrollPane1.getWidth() * 4);
+        modeloColuma.getColumn(3).setPreferredWidth(jScrollPane1.getWidth() * 2);
+        modeloColuma.getColumn(4).setPreferredWidth(jScrollPane1.getWidth() * 1);
+        modeloColuma.getColumn(5).setPreferredWidth(jScrollPane1.getWidth() * 2);
+        modeloColuma.getColumn(6).setPreferredWidth(jScrollPane1.getWidth() * 3);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxCodigo;
@@ -457,7 +462,7 @@ public class frmAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblAlumnos;
+    private javax.swing.JTable tblProfesores;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtCelular;
     private javax.swing.JTextField txtDNI;

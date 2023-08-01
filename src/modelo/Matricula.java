@@ -2,12 +2,21 @@ package modelo;
 
 public class Matricula {
 
-    private int numMatricula, codAlumno, codCurso;
+    private int numMatricula, codEstudiante, codCurso,codProfesor;
     private String fecha, hora;
 
-    public Matricula(int numMatricula, int codAlumno, int codCurso, String fecha, String hora) {
+    public Matricula(int numMatricula, int codEstudiante, int codCurso, String fecha, String hora) {
         this.numMatricula = numMatricula;
-        this.codAlumno = codAlumno;
+        this.codEstudiante = codEstudiante;
+        this.codCurso = codCurso;
+        this.fecha = fecha;
+        this.hora = hora;
+    }
+    
+    public Matricula(int numMatricula, int codEstudiante, int codProfesor, int codCurso, String fecha, String hora) {
+        this.numMatricula = numMatricula;
+        this.codEstudiante = codEstudiante;
+        this.codProfesor = codProfesor;
         this.codCurso = codCurso;
         this.fecha = fecha;
         this.hora = hora;
@@ -17,8 +26,12 @@ public class Matricula {
         this.numMatricula = numMatricula;
     }
 
-    public void setCodigoAlumno(int codAlumno) {
-        this.codAlumno = codAlumno;
+    public void setCodigoEstudiante(int codAlumno) {
+        this.codEstudiante = codAlumno;
+    }
+    
+    public void setCodigoProfesor(int codProfesor) {
+        this.codProfesor = codProfesor;
     }
 
     public void setCodigoCurso(int codCurso) {
@@ -37,10 +50,14 @@ public class Matricula {
         return numMatricula;
     }
 
-    public int getCodigoAlumno() {
-        return codAlumno;
+    public int getCodigoEstudiante() {
+        return codEstudiante;
     }
 
+    public int getCodigoProfesor() {
+        return codProfesor;
+    }
+    
     public int getCodigoCurso() {
         return codCurso;
     }
@@ -56,7 +73,8 @@ public class Matricula {
     @Override
     public String toString() {
         return "\nnumMatricula=" + numMatricula + 
-                "\ncodAlumno=" + codAlumno + 
+                "\ncodEstudiante=" + codEstudiante + 
+                "\ncodProfesor=" + codProfesor + 
                 "\ncodCurso=" + codCurso + 
                 "\nfecha=" + fecha + 
                 "\nhora=" + hora;

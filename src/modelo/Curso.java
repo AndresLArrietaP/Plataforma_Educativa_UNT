@@ -6,11 +6,11 @@ package modelo;
 
 /**
  *
- * @author Delma
+ * @author acer
  */
 public class Curso {
 
-    private int codCurso, ciclo, creditos, horas;
+    private int codCurso, ciclo, creditos, horas,vacantes,matriculados;
     private String asignatura;
 
     public Curso(int codCurso, String asignatura, int ciclo, int creditos, int horas) {
@@ -19,6 +19,27 @@ public class Curso {
         this.ciclo = ciclo;
         this.creditos = creditos;
         this.horas = horas;
+        this.matriculados = 0;
+    }
+    
+    public Curso(int codCurso, String asignatura, int ciclo, int creditos, int horas,int vacantes) {
+        this.codCurso = codCurso;
+        this.asignatura = asignatura;
+        this.ciclo = ciclo;
+        this.creditos = creditos;
+        this.horas = horas;
+        this.vacantes = vacantes;
+        this.matriculados = 0;
+    }
+
+    public Curso(int codCurso, String asignatura, int ciclo, int creditos, int horas,int vacantes,int matriculados) {
+        this.codCurso = codCurso;
+        this.asignatura = asignatura;
+        this.ciclo = ciclo;
+        this.creditos = creditos;
+        this.horas = horas;
+        this.vacantes = vacantes;
+        this.matriculados = matriculados;
     }
 
     public int getCodCurso() {
@@ -61,13 +82,32 @@ public class Curso {
         this.horas = horas;
     }
 
+    public int getVacantes() {
+        return vacantes;
+    }
+
+    public void setVacantes(int vacantes) {
+        this.vacantes = vacantes;
+    }
+
+    public int getMatriculados() {
+        return matriculados;
+    }
+
+    public void setMatriculados(int matriculados) {
+        this.matriculados = matriculados;
+    }
+
+    
     @Override
     public String toString() {
         return "\ncodCurso=" + codCurso + 
                 "\nciclo=" + ciclo + 
                 "\ncreditos=" + creditos + 
                 "\nhoras=" + horas + 
-                "\nasignatura=" + asignatura;
+                "\nasignatura=" + asignatura +
+                "\nvacantes=" + vacantes +
+                "\nmatriculados=" + matriculados;
     }
     
     

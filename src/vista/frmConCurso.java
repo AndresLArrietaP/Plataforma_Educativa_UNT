@@ -4,11 +4,17 @@
  */
 package vista;
 
+import javax.swing.JOptionPane;
+import modelo.Curso;
+import modelo.Lista_Doble;
+
 /**
  *
- * @author Delma
+ * @author acer
  */
 public class frmConCurso extends javax.swing.JInternalFrame {
+
+    Lista_Doble ld = new Lista_Doble();
 
     /**
      * Creates new form frmConCurso
@@ -16,6 +22,13 @@ public class frmConCurso extends javax.swing.JInternalFrame {
     public frmConCurso() {
         initComponents();
         this.setLocation(150, 40);
+
+        ld.CargarEstudiante();
+        ld.CargarCurso();
+        ld.CargarMatricula();
+        ld.CargarRetiro();
+        listarCboCodigo();
+
     }
 
     /**
@@ -29,45 +42,146 @@ public class frmConCurso extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        boxCod = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        txtResultado = new javax.swing.JTextArea();
+        btnConsultar = new javax.swing.JButton();
 
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(204, 102, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Codigo de Curso:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
-        jComboBox1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 120, -1));
+        boxCod.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        boxCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxCodActionPerformed(evt);
+            }
+        });
+        jPanel1.add(boxCod, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 120, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtResultado.setColumns(20);
+        txtResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtResultado.setRows(5);
+        jScrollPane1.setViewportView(txtResultado);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 470, 240));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 470, 240));
 
-        jButton1.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jButton1.setText("Consultar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, -1, -1));
+        btnConsultar.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/search.png"))); // NOI18N
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 50, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 330));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 340));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        try {
+            txtResultado.setText("");
+            listar();
+            boxCod.requestFocus();
+        } catch (Exception error) {
+            mensaje("Seleccione un código de curso");
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void boxCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxCodActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boxCodActionPerformed
+
+    void imprimir() {
+        imprimir("");
+    }
+
+    void listar() {
+        Curso c = ld.buscarCurso(leerCurso());
+        imprimir("CÓDIGO               : " + c.getCodCurso());
+        imprimir("ASIGNATURA           : " + c.getAsignatura());
+        imprimir("CICLO                : " + nombreCiclo(c.getCiclo()));
+        imprimir("CANTIDAD DE CRÉDITOS : " + c.getCreditos());
+        imprimir("CANTIDAD DE HORAS    : " + c.getHoras());
+        imprimir("VACANTES    : " + c.getVacantes());
+        imprimir();
+        int x=ld.buscarMatriculaxCurso(c.getCodCurso());
+        
+        switch (x) {
+            case 0:
+                imprimir("NO HAY ESTUDIANTES MATRICULADOS");
+                break;
+            case 1:
+                imprimir("HAY " + x + " ESTUDIANTES MATRICULADO");
+                break;
+            default:
+                imprimir("HAY " + x + " ESTUDIANTES MATRICULADOS");
+                break;
+        }
+    }
+
+    void listarCboCodigo() {
+        boxCod.removeAllItems();
+        ld.cajaCurso(boxCod);
+        boxCod.setSelectedIndex(-1);
+    }
+
+    public String nombreCiclo(int i) {
+        switch (i) {
+            case 0:
+                return "PRIMERO";
+            case 1:
+                return "SEGUNDO";
+            case 2:
+                return "TERCERO";
+            case 3:
+                return "CUARTO";
+            case 4:
+                return "QUINTO";
+            case 5:
+                return "SEXTO";
+            case 6:
+                return "SEPTIMO";
+            case 7:
+                return "OCTAVO";
+            case 8:
+                return "NOVENO";
+            case 9:
+                return "DECIMO";
+            default:
+                return null;
+        }
+    }
+
+
+    void imprimir(String s) {
+        txtResultado.append(s + "\n");
+    }
+
+    void mensaje(String s) {
+        JOptionPane.showMessageDialog(this, s);
+    }
+    //otros metodos
+
+    public int leerCurso() {
+        return Integer.parseInt(boxCod.getSelectedItem().toString());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> boxCod;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea txtResultado;
     // End of variables declaration//GEN-END:variables
 }

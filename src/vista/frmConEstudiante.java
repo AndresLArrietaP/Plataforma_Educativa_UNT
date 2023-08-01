@@ -9,25 +9,22 @@ import modelo.Estudiante;
 import modelo.Curso;
 import modelo.Lista_Doble;
 import modelo.Matricula;
-import modelo.Profesor;
-import modelo.Retiro;
 
 /**
  *
  * @author acer
  */
-public class frmConRetiro extends javax.swing.JInternalFrame {
+public class frmConEstudiante extends javax.swing.JInternalFrame {
 
     Lista_Doble ld = new Lista_Doble();
 
     /**
-     * Creates new form frmConRetiro
+     * Creates new form frmConAlumno
      */
-    public frmConRetiro() {
+    public frmConEstudiante() {
         initComponents();
         this.setLocation(150, 40);
         ld.CargarEstudiante();
-        ld.CargarProfesor();
         ld.CargarCurso();
         ld.CargarMatricula();
         ld.CargarRetiro();
@@ -45,7 +42,7 @@ public class frmConRetiro extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        boxCodigo = new javax.swing.JComboBox<>();
+        boxCod = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResultado = new javax.swing.JTextArea();
         btnConsultar = new javax.swing.JButton();
@@ -53,16 +50,20 @@ public class frmConRetiro extends javax.swing.JInternalFrame {
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(255, 51, 51));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Código de Retiro:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+        jLabel1.setText("Codigo de Estudiante:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
-        boxCodigo.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
-        jPanel1.add(boxCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 120, -1));
+        boxCod.setFont(new java.awt.Font("Roboto", 0, 13)); // NOI18N
+        boxCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxCodActionPerformed(evt);
+            }
+        });
+        jPanel1.add(boxCod, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 120, -1));
 
         txtResultado.setColumns(20);
         txtResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -78,9 +79,9 @@ public class frmConRetiro extends javax.swing.JInternalFrame {
                 btnConsultarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 50, 50));
+        jPanel1.add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 50, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 340));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -89,53 +90,63 @@ public class frmConRetiro extends javax.swing.JInternalFrame {
         try {
             txtResultado.setText("");
             listar();
-            boxCodigo.requestFocus();
+            boxCod.requestFocus();
         } catch (Exception error) {
-            mensaje("Seleccione un número de retiro");
+            mensaje("Seleccione un código de alumno");
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void boxCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxCodActionPerformed
+
+    }//GEN-LAST:event_boxCodActionPerformed
 
     void imprimir() {
         imprimir("");
     }
-    //metodo Listar
 
+    //metodo Listar
     void listar() {
-        Retiro r = ld.buscarRetiro(leerCodigo());
-        Matricula m = ld.buscarMatricula(r.getNumMatricula());
-        Profesor p = ld.buscarProfesor(m.getCodigoProfesor());
-        Estudiante x = ld.buscarEstudiante(m.getCodigoEstudiante());
-        Curso c = ld.buscarCurso(m.getCodigoCurso());
-        imprimir("CÓDIGO         : " + r.getNumRetiro());
-        imprimir("NUM. MATRÍCULA : " + m.getNumeroMatricula());
-        imprimir("");
-        imprimir("COD.ESTUDIANTE : " + x.getCodEstudiante());
-        imprimir("NOMBRES        : " + x.getNombres());
-        imprimir("APELLIDOS      : " + x.getApellidos());
-        imprimir("DNI            : " + x.getDni());
-        imprimir("EDAD           : " + x.getEdad());
-        imprimir("CELULAR        : " + x.getCelular());
-        imprimir("");
-        imprimir("COD. CURSO     : " + c.getAsignatura());
-        imprimir("CICLO          : " + nombreCiclo(c.getCiclo()));
-        imprimir("CRÉDITOS       : " + c.getCreditos());
-        imprimir("HORAS          : " + c.getHoras());
-        imprimir("");
-        imprimir("COD. PROFESOR   : " + p.getCodprofesor());
-        imprimir("NOMBRES       : " + p.getNombres());
-        imprimir("APELLIDOS     : " + p.getApellidos());
-        imprimir("DNI           : " + p.getDni());
-        imprimir("EDAD          : " + p.getEdad());
-        imprimir("CELULAR       : " + p.getCelular());
+        Estudiante x = ld.buscarEstudiante(leerCodigo());
+        imprimir("CÓDIGO               : " + x.getCodEstudiante());
+        imprimir("NOMBRES              : " + x.getNombres());
+        imprimir("APELLIDOS            : " + x.getApellidos());
+        imprimir("DNI                  : " + x.getDni());
+        imprimir("EDAD                 : " + x.getEdad());
+        imprimir("CELULAR              : " + x.getCelular());
+        imprimir("ESTADO               : " + nombreEstado(x.getEstado()));
+        imprimir();
+        if (x.getEstado() != 0) {
+            
+            Matricula m = ld.buscarMatriculaxAlum(leerCodigo());
+            Curso c = ld.buscarCurso(m.getCodigoCurso());
+            imprimir("ASIGNATURA           : " + c.getAsignatura());
+            imprimir("CICLO                : " + nombreCiclo(c.getCiclo()));
+            imprimir("CANTIDAD DE CRÉDITOS : " + c.getCreditos());
+            imprimir("HORAS                : " + c.getHoras());
+            
+        }
     }
 
     void listarCboCodigo() {
-        boxCodigo.removeAllItems();
-        ld.cajaRetiro(boxCodigo);
-        boxCodigo.setSelectedIndex(-1);
+        boxCod.removeAllItems();
+        ld.cajaEstu(boxCod);
+        boxCod.setSelectedIndex(-1);
     }
 
-    public String nombreCiclo(int i) {
+    String nombreEstado(int i) {
+        switch (i) {
+            case 0:
+                return "REGISTRADO";
+            case 1:
+                return "MATRICULADO";
+            case 2:
+                return "RETIRADO";
+            default:
+                return null;
+        }
+    }
+
+public String nombreCiclo(int i) {
         switch (i) {
             case 0:
                 return "PRIMERO";
@@ -162,6 +173,7 @@ public class frmConRetiro extends javax.swing.JInternalFrame {
         }
     }
 
+
     void imprimir(String s) {
         txtResultado.append(s + "\n");
     }
@@ -171,11 +183,11 @@ public class frmConRetiro extends javax.swing.JInternalFrame {
     }
 
     public int leerCodigo() {
-        return Integer.parseInt(boxCodigo.getSelectedItem().toString());
+        return Integer.parseInt(boxCod.getSelectedItem().toString());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> boxCodigo;
+    private javax.swing.JComboBox<String> boxCod;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
